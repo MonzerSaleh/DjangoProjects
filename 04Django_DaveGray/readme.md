@@ -5,9 +5,11 @@ Dave Gray (Youtube)
 - https://www.youtube.com/watch?v=Rp5vd34d-z4&ab_channel=DaveGray
 - https://github.com/gitdagray/django-course
 
-- 00:00 - Chapter 1
-- 27:55 - Chapter 2
+- 00:00 - Ch01 - basic setup
+- 27:55 - Ch02 - Apps and Templates
 - 50:19 - Ch03 - Models and Migrations
+- 57:36 - Ch04 - Django ORM
+- 1:04:00 - Ch05 - Django Admin
 
 # Notes
 
