@@ -11,7 +11,7 @@
         alt="{{ post.title }}" 
       />
     <h1>{{ post.title }}</h1>
-    <p>{{ post.date }}</p>
+    <p>By {{ post.author }} on {{ post.date }}</p>
     <p>{{ post.body }}</p>
 </section>
 {% endblock %}

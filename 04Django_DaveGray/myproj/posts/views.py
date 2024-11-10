@@ -1,9 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Post
+from . import forms
 # from django.http import HttpResponse
 
-
-
+@login_required(login_url="/users/login/")
+def post_new(request):
+    if request.method == 'POST':
+        form = forms.CreatePost(request.POST, request.FILES)
+        if form.is_valid:
+            # save the form with user
+            newpost = form.save(commit=False)
+            newpost.author = request.user
+            newpost.save()
+            # then redirect to post_list
+            return redirect("posts:list")
+    else:        
+        form = forms.CreatePost()
+    return render(request, 'posts/post_new.html', {'form':form})
 
 def post_page(request, slug):
     post = Post.objects.get(slug=slug)

@@ -5,11 +5,14 @@ Dave Gray (Youtube)
 - https://www.youtube.com/watch?v=Rp5vd34d-z4&ab_channel=DaveGray
 - https://github.com/gitdagray/django-course
 
-- 00:00 - Ch01 - basic setup
-- 27:55 - Ch02 - Apps and Templates
-- 50:19 - Ch03 - Models and Migrations
-- 57:36 - Ch04 - Django ORM
+- 0:00:00 - Ch01 - basic setup
+- 0:27:55 - Ch02 - Apps and Templates
+- 0:50:19 - Ch03 - Models and Migrations
+- 0:57:36 - Ch04 - Django ORM
 - 1:04:00 - Ch05 - Django Admin
+
+- 2:00:00 - Ch09 - User Registration Form
+- 2:53:22 - Ch12 - Custom Forms
 
 # Notes
 
@@ -23,3 +26,10 @@ I assume the following
   - there are also thousands of extensions & add-ons that make life easy.
 - you're familiar with the command line on your machine
   - you know how to install using pip from the command line
+
+```
+> python manage.py createsuperuser
+monz      monz        superuser
+manymonz  1234monzer  **
+monz3     manymonz
+```
