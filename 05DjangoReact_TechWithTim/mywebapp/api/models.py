@@ -6,7 +6,7 @@ def generate_unique_code():
     length = 6
 
     # generate a random code of length using uppercase ascii characters
-    while true:
+    while True:
         code = ''.join(random.choices(string.ascii_uppercase, k=length))
         # now verify uniqueness
         if Room.objects.filter(code=code).count() == 0:
@@ -17,7 +17,7 @@ def generate_unique_code():
 class Room(models.Model):
     # id - this will be added by django to ensure a unique row
     # the room code
-    code = models.CharField(max_length=8, default="",unique=True)
+    code = models.CharField(max_length=8, default=generate_unique_code,unique=True)
     # Room host/creator, 1 host per room
     host = models.CharField(max_length=50,unique=True)
     # permission - allows guests to modify the room music

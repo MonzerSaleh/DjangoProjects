@@ -91,7 +91,7 @@ For this we create a serializer class
 
 - see > api/serializers.py
 
-## Video 3 - React + Webpack & Babel
+## Video 3 - React/Webpack/Babel setup
 
 - add NPM - if not installed
 - django-admin startapp frontend
@@ -119,7 +119,9 @@ mkdir src/components
 ```
 
 Now we need to install some NPM packages
+
 - these depend in part on the react version that was installed.
+
 ```
 npm i webpack webpack-cli --save-dev
 # webpack is a total used to bundle & minify javascripts files
@@ -138,3 +140,175 @@ npm install @babel/plugin-proposal-class-properties
 npm install react-router-dom
 npm install @mui/icons-material
 ```
+
+Now we need to create some config/script files
+
+- see frontend/babel.config.json
+- see frontend/webpack.config.js
+  - this defines the webpack bundling src files and output files
+
+Now we need to make some edits to the package.json config files.  
+To the script setting
+
+- remove the 'test' script line
+- add the following key-value pair
+
+```
+"dev": "webpack --mode development --watch",
+"build": "webpack --mode production"
+```
+
+The first line tells webpack to watch the files and recompile/rebundle as needed.  
+The second line is just the bundling instruction
+
+create 'frontend/src/components/index.js'
+create 'frontend/templates/frontend/index.html'
+
+- this is filled out like a django template
+  - feel free to copy and paste from here
+  - https://github.com/techwithtim/.../frontend/templates/frontend/index.html
+
+There is a couple of things about this page that should be pointed out
+
+1. `<div id="app"></div>`
+
+- is used by react as a target container for it's work
+
+2. `<script src="{% static "frontend/main.js" %}"></script>`
+
+- points to the output from the webpack, which is the react javascript that will take control of the page
+- to see why open the webpack.config.js and look at the output variable
+
+3. next we need to create the django view 'frontend/views.py'
+
+- this should render the index template
+- react will take over after wards
+
+```python
+def index(request, *args, **kwargs):
+    return render(request, 'frontend/index.html')
+```
+
+- this will render the index.html, which will include the bundled javascript
+
+4. we create a urls.py inside frontend in order to route properly and we edit the urls.py in the project urls.py
+
+```python
+path('',include('frontend.urls'))
+  # goes into project/urls.py
+  #
+path('',index)
+  # put into frontend/urls.py
+```
+
+5. Next we need to create some sort of react component in order to test this all out
+
+- create 'frontend/src/components/App.js', copy/paste the code from here
+- https://github.com/techwithtim/Music-Controller-Web-App-Tutorial/blob/main/Tutorial%201%20-%204/frontend/src/components/App.js
+- **Note** this is just a stub but is helpful to get things up
+- Take a moment to notice the following lines
+  - const appDiv = createRoot(document.getElementById("app"));
+    - this is what locates the div with id App
+  - appDiv.render(<App />);
+    - this then renders our App component on the appDiv - effectively inserting the contents into the associated div
+
+6. create frontend/src/index.js, with just the following line
+
+```
+import App from "./components/App"
+```
+
+7. test to see if your program runs
+
+```
+> python manage.py runserver
+```
+
+- Fix any errors before moving on
+
+8. next we need to run the webpack so it will bundle up our react code as well as any other js into a single minified file
+
+## Video.4 - React Router and Building Components
+
+1. begin by creating a css file 'frontend/static/css/index.css'
+
+- copy paste from
+- https://github.com/techwithtim/Music-Controller-Web-App-Tutorial/blob/main/Tutorial%201%20-%204/frontend/static/css/index.css
+
+Let's now take a look at creating a component, then we will hook it into App.js
+
+2. Our goal is to create a HomePage and hook it into the index page
+
+- Create a new page 'frontend/src/component/Homepage.js'
+- copy/paste code from .archive/HomePage_js_v1.txt
+- next create two more pages: RoomJoinPage.js & CreateRoomPage.js
+  - for each page copy the contents from Home
+  - edit the class name and the text contents
+- import all three pages to App.js
+- replace contents of render with
+
+```
+  return (
+        <div>
+          <HomePage />
+          <RoomJoinPage />
+          <CreateRoomPage />
+        </div>
+      );
+```
+
+Run each server and ensure they're working correctly
+
+Of course while this is a good start we would ideally want the user to select a path from the home
+page and the appropriate page should render accordingly. this is where React router comes in useful.
+
+- remove RoomJoinPage & CreateRoomPage from App.js and place them into HomePage.js
+- add the following import
+  - import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom"
+  - we will be using these as we go along
+- Currently the Homepage render should look like this
+  ```
+  render(){
+      return <p>This is the HomePage</p>
+    }
+  ```
+- instead we will implement a router using a Routes statement
+
+```html
+render(){
+  return (
+      <Router>
+          <Routes>
+              <Route path="/" element={<p>This is the home page</p>} />
+              <Route path="/join" element={<RoomJoinPage />}></Route>
+              <Route path="/create" element={<CreateRoomPage />}></Route>
+          </Routes>
+      </Router>
+    );
+  }
+```
+
+- at this point your site should be runnable, furthermore you will need to use the above
+  suffixes in order to get to the appropriate page
+
+<Route path='/join' element={<RoomJoinPage />} />
+<Route path='/create' element={<CreateRoomPage />} />
+
+## Video.5 - Handling POST Requests
+
+In this section we look to create a form that can be submitted using an APIView.
+We won't use react in this part, it will suffice to use Django to get it up and working.
+In the next section we will use react & material ui to create a front facing form for users
+
+- we begin by creating a new serializer 'CreateRoomSerializer'
+- this will require three part to work properly
+  - a new serializer class to our views
+  - a new class view: CreateRoomView
+
+## Video.6 - Material UI Components
+
+Continuing the previous form, in this section we create a user facing form for creating form. It will use the classes
+created in the previous section
+
+- our focus begins by editing the 'fronend/src/components/CreateRoomPage.js'
+
