@@ -91,7 +91,7 @@ For this we create a serializer class
 
 - see > api/serializers.py
 
-## Video 3 - React/Webpack/Babel setup
+## Video.03 - React/Webpack/Babel setup
 
 - add NPM - if not installed
 - django-admin startapp frontend
@@ -228,7 +228,7 @@ import App from "./components/App"
 
 8. next we need to run the webpack so it will bundle up our react code as well as any other js into a single minified file
 
-## Video.4 - React Router and Building Components
+## Video.04 - React Router and Building Components
 
 1. begin by creating a css file 'frontend/static/css/index.css'
 
@@ -294,7 +294,7 @@ render(){
 <Route path='/join' element={<RoomJoinPage />} />
 <Route path='/create' element={<CreateRoomPage />} />
 
-## Video.5 - Handling POST Requests
+## Video.05 - Handling POST Requests
 
 In this section we look to create a form that can be submitted using an APIView.
 We won't use react in this part, it will suffice to use Django to get it up and working.
@@ -305,10 +305,49 @@ In the next section we will use react & material ui to create a front facing for
   - a new serializer class to our views
   - a new class view: CreateRoomView
 
-## Video.6 - Material UI Components
+## Video.06 - Material UI Form submission
 
 Continuing the previous form, in this section we create a user facing form for creating form. It will use the classes
 created in the previous section
 
+Goal: to create & submit a form using react, django backend
+
 - our focus begins by editing the 'fronend/src/components/CreateRoomPage.js'
 
+## Video.07 - Calling API Endpoints
+
+In this section we will create a room page so the user can see the room details.
+
+- create a Room.js Component much like CreateRoomPage.js
+
+  - create a file
+  - create a react Room class
+  - set the default state
+  - create a render that displays the default state variables
+
+1. Create a route for the room page in HomePage.js
+
+- add import Room from ...
+- add react Route `<Route path='/room/:roomCode' element={<Room />}></Route>`
+  - note React will take the room code and place it in a variable called roomCode
+  - ie this.roomCode = this.props.match.params.roomCode
+
+2. add url path to 'frontend/urls.py'
+
+- path('room/<str:roomCode>',index),
+
+3. populate the Room.js file
+
+- copy/paste contents from 'frontend/src/components/Room.js'
+
+At this point you should be able to run your webapp. However, it will catch any string code and display it. Of course what we really want is the details for an existing room. Which is what we will implement next
+
+We will be working in 'api/views.py'
+
+1. add a function: class GetRoom(APIView):
+
+## Video.08 - RoomJoinPage
+
+## Video.09 - HomePage Enhancements
+
+https://www.youtube.com/watch?v=ZP8ZMlKjT4o&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j&index=9&ab_channel=TechWithTim

@@ -5,16 +5,15 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Button, Grid2 } from '@mui/material';
 
-
 export default class CreateRoomPage extends Component{
     defaultVotes = 2;
-
+    
     constructor(props){
         super(props);
         this.state = {
@@ -35,8 +34,10 @@ export default class CreateRoomPage extends Component{
             guestCanPause: e.target.value === 'true' ? true : false,
         });
     }
+    
     handleRoomButtonPressed(){
         {/* console.log(this.state) */}
+        //const navigate = useNavigate();    
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -45,53 +46,59 @@ export default class CreateRoomPage extends Component{
                 guest_can_pause: this.state.guestCanPause
             })
         };
+
+        
         fetch('/api/create-room', requestOptions)
             .then((response) => response.json())
-            .then((data) => console.log(data))
+            .then((data) => window.location.replace("/room/"+data.code))
             .catch(error => console.error(error));
+
+        //navigate("/room/" + data.code);
+        //.then((data) => this.props.history.push("/room/"+data.code))
+        //.then((data) => this.context.history.push("/room/"+data.code))
+        //.then((data,navigate) => navigate("/room/" + data.code))
+        //.then((data) => console.log(data)) 
     }
 
     render(){ 
         return (
 
             <Grid2 container spacing={1}>
-                <Grid2 item xs={12} align="center">
-                    <Typography Component='h4' variant='h4'>
+                <Grid2 xs={12} align="center">
+                    <Typography component={'h4'} variant={'h4'}>
                         Create a Room
                     </Typography>
-                </Grid2>
-                <Grid2 item xs={12} align="center">
                     <FormControl component="fieldset">
                         <FormHelperText>
-                            <div align='center'>
+                            <span align='center'>
                                 Guest Control of Playback State
-                            </div>
+                            </span>
                         </FormHelperText>
                         <RadioGroup row defaultValue='true' onChange={this.handleGuestCanPauseChange}>
                             <FormControlLabel value='true' control={<Radio color="primary" />} label="Play/Pause" labelPlacement='bottom' />
                             <FormControlLabel value='false' control={<Radio color="secondary" />} label="No Control" labelPlacement='bottom' />
                         </RadioGroup>
-                        <Grid2 item xs={12} align="center">
+                        <Grid2 xs={12} align="center">
                             <FormControl>
                                 <TextField required={true} 
                                             type="number" 
                                             onChange={this.handleVotesChange}
                                             defaultValue={this.defaultValue} 
-                                            htmlInput={{min:1, style:{ textAlign: "center"}, }} 
+                                            htmlinput={{min:1, style:{ textAlign: "center"}, }} 
                                 />
                                 <FormHelperText>
-                                    <div align='center'>
+                                    <span align='center'>
                                         Votes Required to Skip Song
-                                    </div>
+                                    </span>
                                 </FormHelperText>
                             </FormControl>
                         </Grid2>
-                        <Grid2 item xs={12} align="center">
+                        <Grid2 xs={12} align="center">
                             <Button color="secondary" variant="contained" onClick={this.handleRoomButtonPressed}>
                                 Create A Room
                             </Button>
                         </Grid2>
-                        <Grid2 item xs={12} align="center">
+                        <Grid2 xs={12} align="center">
                             <Button color="primary" variant="contained" to="/" component={Link}>
                                 Back
                             </Button>
