@@ -1,43 +1,86 @@
-import React, { Component } from 'react'
-import RoomJoinPage from "./RoomJoinPage"
-import CreateRoomPage from "./CreateRoomPage"
-import Room from "./Room"
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom"
+import React, { useState, useEffect, Component } from "react";
+import RoomJoinPage from "./RoomJoinPage";
+import CreateRoomPage from "./CreateRoomPage";
+import Room from "./Room";
+import { Grid2, Button, ButtonGroup, Typography } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 
-export default class HomePage extends Component{
 
-    constructor(props){
-        super(props)
-    }
-    render(){
-        return ( 
-            <Router>
-                <Routes>
-                    <Route path="/" element={<p>This is the home page</p>} />
-                    <Route path="/join" element={<RoomJoinPage />} />
-                    <Route path="/create" element={<CreateRoomPage />} />
-                    <Route path="/room/:roomCode" element={<Room />} />
-                    <Route path="*" element={<p>This is the Null page</p>} />
-                </Routes>
-            </Router>
-        );
-    }
-}
+function HomePage() {
+   const [state, setState] = useState({
+        roomCode: null,
+    });
 
-{/* 
-<Route path='/room/:roomCode' element={<Room />}></Route>
-<Route path="/" element={<p>This is the home page</p>} />
-<Route path="/join" element={<RoomJoinPage />}></Route>
-<Route path="/create" element={<CreateRoomPage />}></Route>
-<Route path="/room" element={<p>Room page</p>}></Route>
-<Route path="*" element={<p>Path not resolved</p>}></Route> 
-*/}
-// Version 1
-// render(){ return <p>This is the HomePage</p> }
-function Home() {
+    useEffect(() => {
+        getRoomDetails();
+    }, []);
+
+   const getRoomDetails = () => {
+    fetch("/api/user-in-room")
+      .then((response) => response.json())
+      .then((data) => {
+        setState({
+          roomCode: data.code,
+        });
+      });
+  }
+
+  const renderHomePage = () => {
+    return (
+      <Grid2 container spacing={3}>
+        <Grid2 xs={12} align="center">
+          <Typography variant="h3" compact="h3">
+            House Party
+          </Typography>
+        </Grid2>
+        <Grid2 xs={12} align="center">
+          <ButtonGroup disableElevation variant="contained" color="primary">
+            <Button color="primary" to="/join" component={Link}>
+              Join a Room
+            </Button>
+            
+            <Button color="secondary" to="/create" component={Link}>
+              Create a Room
+            </Button>
+          </ButtonGroup>
+        </Grid2>
+      </Grid2>
+    );
+  }
+
+  // if the user is already in a room then redirect them
+  const roomRedirect = () => {
+    return state.roomCode ? 
+            (<Navigate to={`/room/${state.roomCode}`} />) : 
+            (renderHomePage());
+  }
+
   return (
-    <div>
-      <h2>Home</h2>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<roomRedirect />} />
+        <Route path="/join" element={<RoomJoinPage />} />
+        <Route path="/create" element={<CreateRoomPage />} />
+        <Route path="/room/:roomCode" element={<Room />} />
+      </Routes>
+    </Router>
   );
 }
+export default HomePage;
+
+// Version 1 
+// render(){ return <p>This is the HomePage</p> }
+// Version 2
+// render(){
+//   return ( 
+//       <Router>
+//           <Routes>
+//               <Route path="/" element={<p>This is the home page</p>} />
+//               <Route path="/join" element={<RoomJoinPage />} />
+//               <Route path="/create" element={<CreateRoomPage />} />
+//               <Route path="/room/:roomCode" element={<Room />} />
+//               <Route path="*" element={<p>This is the Null page</p>} />
+//           </Routes>
+//       </Router>
+//   );
+// }

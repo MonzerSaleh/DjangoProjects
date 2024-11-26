@@ -351,3 +351,19 @@ We will be working in 'api/views.py'
 ## Video.09 - HomePage Enhancements
 
 https://www.youtube.com/watch?v=ZP8ZMlKjT4o&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j&index=9&ab_channel=TechWithTim
+
+1. First step is to restyle the home page
+
+- Add a welcome header/header
+- add buttons for CreateRoom and Join Room
+
+2. Add redirection to each of the buttons, as well as an autoredirection. if the user lands on the homepage and they are
+   already in a room then they will be redirected automatically
+
+- we begin by adding a view to api/views.py. this will return the session room_code.
+- we will also need to use react to call the view and handle the response. which may be null if the user hasn't joined a room yet
+  - recall that the JoinRoom view sets the 'room_code' in the session variable
+
+## Video.10 -
+
+https://www.youtube.com/watch?v=uhyHwY94vwQ&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j&index=10&ab_channel=TechWithTim
