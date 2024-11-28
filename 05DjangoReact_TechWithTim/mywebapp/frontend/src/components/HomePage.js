@@ -32,8 +32,6 @@ function HomePage() {
           <Typography variant="h3" compact="h3">
             House Party
           </Typography>
-        </Grid2>
-        <Grid2 xs={12} align="center">
           <ButtonGroup disableElevation variant="contained" color="primary">
             <Button color="primary" to="/join" component={Link}>
               Join a Room
@@ -49,19 +47,30 @@ function HomePage() {
   }
 
   // if the user is already in a room then redirect them
-  const roomRedirect = () => {
+  const RoomRedirect = () => {
     return state.roomCode ? 
             (<Navigate to={`/room/${state.roomCode}`} />) : 
             (renderHomePage());
   }
 
+  const clearRoomCode = () => {
+    setState({
+      roomCode: null,
+    });
+  }
+
+  const LeaveRoomRedirect = (props) => {
+    return <Room {...props} leaveRoomCallback={clearRoomCode} />;
+  }
+
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<roomRedirect />} />
+        <Route path="/" element={<RoomRedirect />} />
         <Route path="/join" element={<RoomJoinPage />} />
         <Route path="/create" element={<CreateRoomPage />} />
-        <Route path="/room/:roomCode" element={<Room />} />
+        <Route path="/room/:roomCode" element={<LeaveRoomRedirect />} />
       </Routes>
     </Router>
   );

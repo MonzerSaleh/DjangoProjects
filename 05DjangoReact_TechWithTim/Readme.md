@@ -364,6 +364,8 @@ https://www.youtube.com/watch?v=ZP8ZMlKjT4o&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxv
 - we will also need to use react to call the view and handle the response. which may be null if the user hasn't joined a room yet
   - recall that the JoinRoom view sets the 'room_code' in the session variable
 
-## Video.10 -
+## Video.10 - Sessions & Leaving Rooms
 
 https://www.youtube.com/watch?v=uhyHwY94vwQ&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j&index=10&ab_channel=TechWithTim
+
+

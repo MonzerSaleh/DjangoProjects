@@ -1,6 +1,7 @@
 //import React, { Component } from "react";
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Grid2, Button, Typography, Grid } from "@mui/material";
 
 function Room() {
     const { roomCode } = useParams();   
@@ -16,28 +17,61 @@ function Room() {
     }, []);
 
     const getRoomDetails = () => {
-        fetch("/api/get-room" + "?code="+roomCode)
-        .then((response) => response.json())
+        return fetch("/api/get-room" + "?code="+roomCode)
+        .then((response) => {            
+            if (!response.ok){
+                leaveRoomCallback();
+                window.location.replace("/")
+            }
+            return response.json()
+        })
         .then((data) => {
             setState({
             votesToSkip: data.votes_to_skip,
             guestCanPause: data.guest_can_pause,
             isHost: data.is_host,
             });
+            //console.log(data);
+            //console.log(state);
         });
-    };
+    }
+
+    const leaveButtonPressed = () => {
+        const requestOptions = {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'}
+        }
+        fetch("/api/leave-room", requestOptions)
+            .then((response) => {
+                leaveRoomCallback();
+                window.location.replace("/")
+            });
+    }
 
     return (
-        <div>
-            <h3>{roomCode}</h3>
-            <p>Votes: {state.votesToSkip}</p>
-            <p>Guest Can Pause: {state.guestCanPause.toString()}</p>
-            <p>Host: {state.isHost.toString()}</p>
-        </div>
+        <Grid2 container spacing={1}>
+            <Grid2 xs={12} align="center">
+                <Typography variant="h5" component="h5">
+                    Code: {roomCode}
+                </Typography>
+                <Typography variant="h6" component="h6">
+                    Votes: {state.votesToSkip}
+                </Typography>
+                <Typography variant="h6" component="h6">
+                    Guest Can Pause: {state.guestCanPause.toString()}
+                </Typography>            
+                <Typography variant="h6" component="h6">
+                    Host: {state.isHost.toString()}
+                </Typography>
+                <Button variant="contained" color="secondary" onClick={leaveButtonPressed}>
+                    Leave Room
+                </Button>
+            </Grid2>
+            
+        </Grid2>
     );
 }
 export default Room;
-
 
 // getRoomDetails() {
 //     fetch("/api/get-room" + "?code=" + this.roomCode)
