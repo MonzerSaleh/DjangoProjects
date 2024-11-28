@@ -368,4 +368,6 @@ https://www.youtube.com/watch?v=ZP8ZMlKjT4o&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxv
 
 https://www.youtube.com/watch?v=uhyHwY94vwQ&list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j&index=10&ab_channel=TechWithTim
 
-
+- currently there is a bug of some sort.
+- The user can leave a room if they have come from the HomePage
+- But there seems to be issues when trying to leave a room if the user came from JoinRoom or from CreateRoom pages

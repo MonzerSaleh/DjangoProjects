@@ -5,7 +5,7 @@ import { Grid2, Button, Typography, Grid } from "@mui/material";
 
 function Room() {
     const { roomCode } = useParams();   
-    
+    // default values
     const [state, setState] = useState({
         votesToSkip: 2,
         guestCanPause: false,
@@ -20,12 +20,14 @@ function Room() {
         return fetch("/api/get-room" + "?code="+roomCode)
         .then((response) => {            
             if (!response.ok){
-                leaveRoomCallback();
+                console.log('I WAS HIT')
+                //leaveRoomCallback();
                 window.location.replace("/")
             }
             return response.json()
         })
         .then((data) => {
+            console.log('1'+data);
             setState({
             votesToSkip: data.votes_to_skip,
             guestCanPause: data.guest_can_pause,
@@ -42,9 +44,10 @@ function Room() {
             headers: {'Content-Type': 'application/json'}
         }
         fetch("/api/leave-room", requestOptions)
+            .then(data => console.log(data))
             .then((response) => {
                 leaveRoomCallback();
-                window.location.replace("/")
+                window.location.href = "/";
             });
     }
 
