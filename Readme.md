@@ -9,6 +9,12 @@ Other
 
 - https://www.youtube.com/watch?v=RozHfswVZYE&list=PL4cUxeGkcC9iqfAag3a_BKEX1N43uJutw&index=8&ab_channel=NetNinja
 
+
+06React_ProgWMosh - React for Beginners
+- 06React_ProgWMosh
+- https://www.youtube.com/watch?v=SqcY0GlETPk&t=82s&ab_channel=ProgrammingwithMosh
+
+
 ## Completed
 
 ### 04Django_DaveGray
